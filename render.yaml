@@ -1,0 +1,9 @@
+services:
+  - type: worker
+    name: rsi-telegram-bot
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: ./start.sh
+
+
