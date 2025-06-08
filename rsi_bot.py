@@ -1,9 +1,10 @@
 import requests
 import pandas as pd
-import talib
 import time
 import schedule
 import os
+from ta.momentum import RSIIndicator
+from ta.trend import EMAIndicator
 
 # configuration
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
@@ -49,8 +50,8 @@ def analyze_rsi_for_symbol(symbol):
     try:
         print(f"🔍 Checking {symbol}...")
         df = get_binance_klines(symbol, INTERVAL)
-        df['RSI'] = talib.RSI(df['close'], RSI_PERIOD)
-        df['EMA'] = talib.EMA(df['close'], EMA_PERIOD)
+        rsi = RSIIndicator(close=df['close'], window=14).rsi()
+        ema = EMAIndicator(close=df['close'], window=200).ema_indicator()
 
         latest = df.iloc[-1]
         rsi = latest['RSI']
